@@ -15,11 +15,17 @@ Before starting, ensure that:
 Download and set executable permissions for `cephadm`:
 
 ```bash
+### in new host run this command
 curl --silent --remote-name --location https://github.com/ceph/ceph/raw/pacific/src/cephadm/cephadm
 chmod +x cephadm
-
+mkdir /etc/ceph
+```
+### in monitoring server run this command
+```
+scp -r /etc/ceph/* ceph3:/etc/ceph
+```
 ### Step 2: Add Ceph Repository and Install Packages
-
+```
 sudo ./cephadm add-repo --release pacific
 sudo ./cephadm install
 cephadm install ceph-common
