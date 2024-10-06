@@ -35,6 +35,7 @@ cephadm install ceph-common
 ceph orch host ls --detail
 
 ### Step 4: Set Up SSH Access to the New OSD Host
+### in monitoring server run this command
 
 ssh-copy-id -f -i /etc/ceph/ceph.pub root@<new-host>
 

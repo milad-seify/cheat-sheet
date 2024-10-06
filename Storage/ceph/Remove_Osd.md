@@ -35,11 +35,14 @@ ceph osd rm osd.1
 ceph osd rm osd.3
 ceph osd rm osd.6
 ceph osd rm osd.9
-### Step 7: Remove OSDs from the CRUSH Map
+### Step 7: Remove OSDs from the CRUSH Map And auth d
 ceph osd crush remove osd.1
 ceph osd crush remove osd.3
 ceph osd crush remove osd.6
 ceph osd crush remove osd.9
+ceph auth ls
+### and find your osd name 
+ceph auth rm [osd-name]
 ```
 
 ## Monitor Node Removal Process
