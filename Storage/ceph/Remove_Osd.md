@@ -11,6 +11,7 @@ Follow these steps to safely remove OSDs from the Ceph cluster.
 ### Step 1: Check the OSD Tree
 
 Run the following command to check the OSD tree and identify the OSDs you want to remove:
+You can also directly use the drain command For Removing one host from your cluster.It removes OSDs from the cluster one by one And thats is good for us.
 ```bash
 ceph osd tree
 ### Step 2: Reweight the OSDs

@@ -22,7 +22,7 @@ mkdir /etc/ceph
 ```
 ### in monitoring server run this command
 ```
-scp -r /etc/ceph/* ceph3:/etc/ceph
+scp -r /etc/ceph/* [new-host]:/etc/ceph
 ```
 ### Step 2: Add Ceph Repository and Install Packages
 ```
@@ -32,7 +32,7 @@ cephadm install ceph-common
 
 ### Step 3: List Current Hosts (Run this on You monitor Server)
 
-ceph orch host ls --detail
+ceph orch host ls
 
 ### Step 4: Set Up SSH Access to the New OSD Host
 ### in monitoring server run this command
@@ -42,7 +42,7 @@ ssh-copy-id -f -i /etc/ceph/ceph.pub root@<new-host>
 ### Step 5: Add the New OSD Host to the Cluster
 
 ceph orch host add <newhost> [<ip>] [<label1> ...]
-Exmaple: ceph orch host add host4 10.10.0.104 --labels _admin
+Exmaple: ceph orch host add host4 10.10.0.104 --labels _admin,osd,mon
 
 ### Step 6: Apply OSDs to All Available Devices
 
