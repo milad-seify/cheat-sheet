@@ -9,7 +9,7 @@ This document outlines the step-by-step process for removing OSDs and a monitor 
 Follow these steps to safely remove OSDs from the Ceph cluster.
 
 ### Step 1: Check the OSD Tree
-
+2 Ways You have:
 Run the following command to check the OSD tree and identify the OSDs you want to remove:
 You can also directly use the drain command For Removing one host from your cluster.It removes OSDs from the cluster one by one And thats is good for us.
 ```bash
@@ -41,6 +41,7 @@ ceph osd crush remove osd.1
 ceph osd crush remove osd.3
 ceph osd crush remove osd.6
 ceph osd crush remove osd.9
+ceph osd cruch remove [host-name]
 ceph auth ls
 ### and find your osd name 
 ceph auth rm [osd-name]
@@ -60,4 +61,14 @@ ceph orch apply mgr ceph4
 ceph orch ps
 ### Step 5: Remove the Old Manager Daemon
 ceph orch daemon rm mgr.mon3.tmsvmk
+### Step 7: Remove OSDs from the CRUSH Map And auth d
+ceph osd crush remove osd.1
+ceph osd crush remove osd.3
+ceph osd crush remove osd.6
+ceph osd crush remove osd.9
+ceph osd cruch remove [host-name]
+ceph auth ls
+### and find your osd name 
+ceph auth rm [osd-name]
+
 ```
