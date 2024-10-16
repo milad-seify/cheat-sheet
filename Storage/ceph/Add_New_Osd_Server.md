@@ -44,10 +44,10 @@ ssh-copy-id -f -i /etc/ceph/ceph.pub root@<new-host>
 ceph orch host add <newhost> [<ip>] [<label1> ...]
 Exmaple: ceph orch host add host4 10.10.0.104 --labels _admin,osd,mon
 
-### Step 6: Apply OSDs to All Available Devices
+### Step 6: Apply mon and OSDs to All Available Devices
 
 cephadm shell -- ceph orch apply osd --all-available-devices
-
+ceph orch apply mon <newhost>
 ### Step 7: Verify OSD Status and List Devices
 
 ceph-volume lvm list
