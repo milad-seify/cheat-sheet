@@ -72,3 +72,8 @@ ceph auth ls
 ceph auth rm [osd-name]
 
 ```
+### Final 
+```bash
+ceph orch ps
+ceph orch daemon rm mgr.cephhost.tmsfmu
+```
