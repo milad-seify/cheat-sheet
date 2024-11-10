@@ -8,19 +8,19 @@
       labels:
         service: hardware
         severity: warning
-        team: hardware-team
+        team: hard
       annotations:
         summary: "Hardware Issue: IPMI Fans on {{ $labels.instance }}"
         description: "The IPMI fans on {{ $labels.instance }} are degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
 
     # High Temperature Alert
     - alert: High_Temperature_Detected
-      expr: (Temperature1{job="temperature_sensor"} > 290) and (Temperature2{job="temperature_sensor"} > 290)
+      expr: (Temperature1{job="temperature_sensor"} > 290)
       for: 5m
       labels:
         service: hardware
         severity: critical
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Critical: High Temperature on {{ $labels.instance }}"
         description: "High temperature detected consistently for 5 minutes on sensors in {{ $labels.instance }}.\nValue: {{ $value }}"
@@ -32,7 +32,7 @@
       labels:
         service: hardware
         severity: warning
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Hardware Issue: IPMI Sensors on {{ $labels.instance }}"
         description: "The IPMI sensors on {{ $labels.instance }} are degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
@@ -44,7 +44,7 @@
       labels:
         service: hardware
         severity: critical
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Critical: NVMe Disk Failure on {{ $labels.instance }}"
         description: "NVMe disk failure detected on {{ $labels.instance }}.\nValue: {{ $value }}\nLabels: {{ $labels }}"
@@ -56,7 +56,7 @@
       labels:
         service: hardware
         severity: critical
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Critical: NVMe Disk Write Check on {{ $labels.instance }}"
         description: "The write threshold for NVMe disks on {{ $labels.instance }} has been exceeded.\nValue: {{ $value }}\nLabels: {{ $labels }}"
@@ -68,7 +68,7 @@
       labels:
         service: hardware
         severity: warning
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Hardware Issue: HP iLO Fans on {{ $labels.instance }}"
         description: "HP iLO fans on {{ $labels.instance }} are degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
@@ -80,7 +80,7 @@
       labels:
         service: hardware
         severity: warning
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Hardware Issue: HP iLO Processor on {{ $labels.instance }}"
         description: "HP iLO processor on {{ $labels.instance }} is degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
@@ -92,7 +92,7 @@
       labels:
         service: hardware
         severity: warning
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Hardware Issue: HP iLO Power Supplies on {{ $labels.instance }}"
         description: "HP iLO power supplies on {{ $labels.instance }} are degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
@@ -104,7 +104,7 @@
       labels:
         service: hardware
         severity: warning
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Hardware Issue: HP iLO Storage on {{ $labels.instance }}"
         description: "HP iLO storage on {{ $labels.instance }} is degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
@@ -116,7 +116,7 @@
       labels:
         service: hardware
         severity: warning
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Hardware Issue: HP iLO Memory on {{ $labels.instance }}"
         description: "HP iLO memory on {{ $labels.instance }} is degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
@@ -127,7 +127,7 @@
       labels:
         severity: critical
         service: cpu
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "High CPU usage detected on {{ $labels.instance }}"
         description: "CPU usage is above 90% for the past 5 minutes on {{ $labels.instance }}."
@@ -139,7 +139,7 @@
       labels:
         severity: critical
         service: memory
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Memory usage is critically high on {{ $labels.instance }}"
         description: "Available memory is below 10% on {{ $labels.instance }}."
@@ -151,7 +151,7 @@
       labels:
         severity: warning
         service: disk
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "High disk usage detected on {{ $labels.instance }}"
         description: "Disk usage on the root partition has exceeded 85% on {{ $labels.instance }}."
@@ -162,7 +162,7 @@
       labels:
         severity: warning
         service: network
-        team: network-team
+        team: network
       annotations:
         summary: "High network traffic detected on {{ $labels.instance }}"
         description: "Network traffic is above 1 Gbps on {{ $labels.instance }}."
@@ -173,7 +173,7 @@
       labels:
         severity: info
         service: uptime
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Server {{ $labels.instance }} has been running for over a year"
         description: "The server has been up for over a year and may need a reboot."
@@ -185,7 +185,7 @@
       labels:
         severity: warning
         service: io
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "High I/O wait detected on {{ $labels.instance }}"
         description: "I/O wait time has exceeded 25% over the last 5 minutes on {{ $labels.instance }}."
@@ -197,7 +197,7 @@
       labels:
         severity: critical
         service: raid
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "RAID array degraded on {{ $labels.instance }}"
         description: "The RAID array is reporting a degraded status on {{ $labels.instance }}."
@@ -208,7 +208,7 @@
       labels:
         severity: critical
         service: power
-        team: hardware-team
+        team: hardware
       annotations:
         summary: "Power supply failure detected on {{ $labels.instance }}"
         description: "The power supply is reporting a failure on {{ $labels.instance }}."
