@@ -1,0 +1,215 @@
+# Hardware Monitoring Alerts
+- name: hardware
+  rules:
+    # IPMI Fans Alert
+    - alert: IPMI_Fans_Degraded
+      expr: (changes(ipmi_fan_speed_state{}[2h]) > 0) and (ipmi_fan_speed_state{} > 0)
+      for: 1h
+      labels:
+        service: hardware
+        severity: warning
+        team: hardware-team
+      annotations:
+        summary: "Hardware Issue: IPMI Fans on {{ $labels.instance }}"
+        description: "The IPMI fans on {{ $labels.instance }} are degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
+
+    # High Temperature Alert
+    - alert: High_Temperature_Detected
+      expr: (Temperature1{job="temperature_sensor"} > 290) and (Temperature2{job="temperature_sensor"} > 290)
+      for: 5m
+      labels:
+        service: hardware
+        severity: critical
+        team: hardware-team
+      annotations:
+        summary: "Critical: High Temperature on {{ $labels.instance }}"
+        description: "High temperature detected consistently for 5 minutes on sensors in {{ $labels.instance }}.\nValue: {{ $value }}"
+
+    # IPMI Sensors Alert
+    - alert: IPMI_Sensors_Degraded
+      expr: (changes(ipmi_sensor_state{}[2h]) > 0) and (ipmi_sensor_state{} > 0)
+      for: 1h
+      labels:
+        service: hardware
+        severity: warning
+        team: hardware-team
+      annotations:
+        summary: "Hardware Issue: IPMI Sensors on {{ $labels.instance }}"
+        description: "The IPMI sensors on {{ $labels.instance }} are degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
+
+    # NVMe Disk Health Alert
+    - alert: NVME_Disk_Failure
+      expr: (changes(smartmon_device_smart_healthy[2h]) > 0) and (smartmon_device_smart_healthy != 1)
+      for: 1h
+      labels:
+        service: hardware
+        severity: critical
+        team: hardware-team
+      annotations:
+        summary: "Critical: NVMe Disk Failure on {{ $labels.instance }}"
+        description: "NVMe disk failure detected on {{ $labels.instance }}.\nValue: {{ $value }}\nLabels: {{ $labels }}"
+
+    # NVMe Disk Write Check
+    - alert: NVME_Disk_Write_Threshold
+      expr: smartmon_host_write_commands_raw_value * 4096 / 1024 / 1024 / 1024 > 102400
+      for: 1h
+      labels:
+        service: hardware
+        severity: critical
+        team: hardware-team
+      annotations:
+        summary: "Critical: NVMe Disk Write Check on {{ $labels.instance }}"
+        description: "The write threshold for NVMe disks on {{ $labels.instance }} has been exceeded.\nValue: {{ $value }}\nLabels: {{ $labels }}"
+
+    # HP iLO Fans Alert
+    - alert: HPiLO_Fans_Degraded
+      expr: (changes(hpilo_fans{}[2h]) > 0) and (hpilo_fans{} != 0)
+      for: 1h
+      labels:
+        service: hardware
+        severity: warning
+        team: hardware-team
+      annotations:
+        summary: "Hardware Issue: HP iLO Fans on {{ $labels.instance }}"
+        description: "HP iLO fans on {{ $labels.instance }} are degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
+
+    # HP iLO Processor Alert
+    - alert: HPiLO_Processor_Degraded
+      expr: (changes(hpilo_processor{}[2h]) > 0) and (hpilo_processor{} != 0)
+      for: 1h
+      labels:
+        service: hardware
+        severity: warning
+        team: hardware-team
+      annotations:
+        summary: "Hardware Issue: HP iLO Processor on {{ $labels.instance }}"
+        description: "HP iLO processor on {{ $labels.instance }} is degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
+
+    # HP iLO Power Supply Alert
+    - alert: HPiLO_Power_Supply_Degraded
+      expr: (changes(hpilo_power_supplies{}[2h]) > 0) and (hpilo_power_supplies{} != 0)
+      for: 1h
+      labels:
+        service: hardware
+        severity: warning
+        team: hardware-team
+      annotations:
+        summary: "Hardware Issue: HP iLO Power Supplies on {{ $labels.instance }}"
+        description: "HP iLO power supplies on {{ $labels.instance }} are degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
+
+    # HP iLO Storage Alert
+    - alert: HPiLO_Storage_Degraded
+      expr: (changes(hpilo_storage{}[2h]) > 0) and (hpilo_storage{} != 0)
+      for: 1h
+      labels:
+        service: hardware
+        severity: warning
+        team: hardware-team
+      annotations:
+        summary: "Hardware Issue: HP iLO Storage on {{ $labels.instance }}"
+        description: "HP iLO storage on {{ $labels.instance }} is degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
+
+    # HP iLO Memory Alert
+    - alert: HPiLO_Memory_Degraded
+      expr: (changes(hpilo_memory[2h]) > 0) and (hpilo_memory != 0) and (hpilo_power_status != 0)
+      for: 1h
+      labels:
+        service: hardware
+        severity: warning
+        team: hardware-team
+      annotations:
+        summary: "Hardware Issue: HP iLO Memory on {{ $labels.instance }}"
+        description: "HP iLO memory on {{ $labels.instance }} is degraded or dead.\nValue: {{ $value }}\nLabels: {{ $labels }}"
+
+    - alert: High_CPU_Usage
+      expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+      for: 5m
+      labels:
+        severity: critical
+        service: cpu
+        team: hardware-team
+      annotations:
+        summary: "High CPU usage detected on {{ $labels.instance }}"
+        description: "CPU usage is above 90% for the past 5 minutes on {{ $labels.instance }}."
+    
+
+    - alert: Memory_Usage_Threshold
+      expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 10
+      for: 5m
+      labels:
+        severity: critical
+        service: memory
+        team: hardware-team
+      annotations:
+        summary: "Memory usage is critically high on {{ $labels.instance }}"
+        description: "Available memory is below 10% on {{ $labels.instance }}."
+
+
+    - alert: Disk_Space_Usage
+      expr: 100 * (node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"}) / node_filesystem_size_bytes{mountpoint="/"} > 85
+      for: 5m
+      labels:
+        severity: warning
+        service: disk
+        team: hardware-team
+      annotations:
+        summary: "High disk usage detected on {{ $labels.instance }}"
+        description: "Disk usage on the root partition has exceeded 85% on {{ $labels.instance }}."
+
+    - alert: High_Network_Usage
+      expr: (rate(node_network_receive_bytes_total{device!="lo"}[5m]) + rate(node_network_transmit_bytes_total{device!="lo"}[5m])) > 1e+09
+      for: 5m
+      labels:
+        severity: warning
+        service: network
+        team: network-team
+      annotations:
+        summary: "High network traffic detected on {{ $labels.instance }}"
+        description: "Network traffic is above 1 Gbps on {{ $labels.instance }}."
+
+    - alert: Server_Uptime
+      expr: node_time_seconds - node_boot_time_seconds > 60 * 60 * 24 * 365
+      for: 1h
+      labels:
+        severity: info
+        service: uptime
+        team: hardware-team
+      annotations:
+        summary: "Server {{ $labels.instance }} has been running for over a year"
+        description: "The server has been up for over a year and may need a reboot."
+
+
+    - alert: I/O_Wait_Alert
+      expr: rate(node_cpu_seconds_total{mode="iowait"}[5m]) > 0.25
+      for: 5m
+      labels:
+        severity: warning
+        service: io
+        team: hardware-team
+      annotations:
+        summary: "High I/O wait detected on {{ $labels.instance }}"
+        description: "I/O wait time has exceeded 25% over the last 5 minutes on {{ $labels.instance }}."
+
+
+    - alert: RAID_Degraded
+      expr: changes(raid_degraded{job="raid_monitoring"}[2h]) > 0 and raid_degraded != 0
+      for: 1h
+      labels:
+        severity: critical
+        service: raid
+        team: hardware-team
+      annotations:
+        summary: "RAID array degraded on {{ $labels.instance }}"
+        description: "The RAID array is reporting a degraded status on {{ $labels.instance }}."
+
+    - alert: Power_Supply_Failure
+      expr: node_power_supply_status{job="power_monitoring"} == 0
+      for: 5m
+      labels:
+        severity: critical
+        service: power
+        team: hardware-team
+      annotations:
+        summary: "Power supply failure detected on {{ $labels.instance }}"
+        description: "The power supply is reporting a failure on {{ $labels.instance }}."
+
